@@ -24,8 +24,10 @@ ENV MAIL_PASSWORD 00b389e7c30bf1
 ENV FLASKY_ADMIN test@example.com
 
 # Create database
+RUN flask db init
+RUN flask db migrate
 RUN flask db upgrade
 
 EXPOSE 5000
 
-ENTRYPOINT [ "flask", "run", "--host=0.0.0.0" ]
+CMD [ "flask", "run", "--host=0.0.0.0" ]
