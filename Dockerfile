@@ -6,7 +6,8 @@ RUN apt update && apt install -y python3 python3-pip
 
 # Install flask and other extensions
 RUN pip3 install flask flask-bootstrap flask-moment \
-    flask-mail flask-sqlalchemy flask-migrate flask-wtf
+    flask-mail flask-sqlalchemy flask-migrate flask-wtf \
+    flask-login
 
 # Copy app
 COPY . /flasky
