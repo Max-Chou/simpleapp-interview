@@ -2,12 +2,12 @@
 FROM ubuntu:18.04
 
 # Update and Install python3
-RUN apt update && apt install -y python3 python3-pip
+RUN apt-get update && apt-get install -y python3 python3-pip
 
 # Install flask and other extensions
 RUN pip3 install flask flask-bootstrap flask-moment \
     flask-mail flask-sqlalchemy flask-migrate flask-wtf \
-    flask-login
+    flask-login uwsgi
 
 # Copy app
 COPY . /flasky
@@ -24,11 +24,6 @@ ENV MAIL_USERNAME c560e4b4fd2dd9
 ENV MAIL_PASSWORD 00b389e7c30bf1
 ENV FLASKY_ADMIN test@example.com
 
-# Create database
-RUN flask db init
-RUN flask db migrate
-RUN flask db upgrade
-
 EXPOSE 5000
 
-CMD [ "flask", "run", "--host=0.0.0.0" ]
+CMD [ "/flasky/cmd.sh" ]

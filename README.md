@@ -1,12 +1,14 @@
 # simpleapp-interview
 The simple project for the job interview. 
 
-## Jobs
-- DevOps
-- Backend 
+## Skill Lists
+- Python Flask Framework
+- Docker
+- Jenkins
+- Nginx
 
-## Tasks
-- Simple web application based on Python/Flask
-- Run Build/Test/Deploy using Docker and Ansible
-- CI/CD using Jenkins
-
+## TODO
+- Applications - too simple
+- Secrets - secret keys
+- Database - MySQL or postgreSQL
+- Deployments - virtual machines, containers and cloud

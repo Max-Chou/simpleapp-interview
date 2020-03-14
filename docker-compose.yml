@@ -1,0 +1,14 @@
+version: "3"
+
+services: 
+  proxy:
+    build: ./proxy/
+    ports:
+      - "80:80"
+    links:
+      - flasky
+
+  flasky:
+    build: ./flasky/
+    environment: 
+      ENV: PROD
