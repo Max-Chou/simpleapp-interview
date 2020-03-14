@@ -11,4 +11,8 @@ services:
   flasky:
     build: ./flasky/
     environment: 
-      ENV: PROD
+      ENV: "PROD"
+      SECRET_KEY: "secret"
+      MAIL_USERNAME: "f16d84a985c337"
+      MAIL_PASSWORD: "b7b5a4c3e0242a"
+      FLASKY_ADMIN: "test@example.com"

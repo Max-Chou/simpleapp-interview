@@ -15,5 +15,5 @@ elif [ "$ENV" = 'UNIT' ]; then
 else
   echo "Running Production Server"
   uwsgi --http 0.0.0.0:9090 --wsgi-file /flasky/flasky.py \
-    --callable app --stats 0.0.0.0:9191
+    --callable app --stats 0.0.0.0:9191 --processes 4 --threads 2
 fi
