@@ -1,0 +1,31 @@
+version: "3.1"
+
+services:
+  proxy:
+    image: afai97202013/flasky-proxy:1.0
+    ports:
+      - "80:80"
+  
+  flasky:
+    image: afai97202013/flasky:1.0
+    environment:
+      ENV: "PROD"
+      SECRET_KEY: /run/secrets/flasky-secret
+      MAIL_USERNAME: /run/secrets/flasky-mail-username
+      MAIL_PASSWORD: /run/secrets/flasky-mail-password
+      FLASKY_ADMIN: /run/secrets/flasky-admin
+    secrets:
+      - flasky-secret
+      - flasky-mail-username
+      - flasky-mail-password
+      - flasky-admin
+
+secrets:
+  flasky-secret:
+    external: true
+  flasky-mail-username:
+    external: true
+  flasky-mail-password:
+    external: true
+  flasky-admin:
+    external: true

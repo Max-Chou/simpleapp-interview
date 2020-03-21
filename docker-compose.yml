@@ -1,18 +1,8 @@
-version: "3"
+version: "3.1"
 
-services: 
+services:
   proxy:
-    build: ./proxy/
-    ports:
-      - "80:80"
-    links:
-      - flasky
-
+    image: flasky-proxy:latest
+  
   flasky:
-    build: ./flasky/
-    environment: 
-      ENV: "PROD"
-      SECRET_KEY: "secret"
-      MAIL_USERNAME: "f16d84a985c337"
-      MAIL_PASSWORD: "b7b5a4c3e0242a"
-      FLASKY_ADMIN: "test@example.com"
+    image: flasky:latest

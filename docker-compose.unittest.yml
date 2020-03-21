@@ -1,0 +1,35 @@
+version: "3.1"
+
+services:
+  proxy:
+    build: ./proxy/
+    ports:
+      - "80:80"
+  
+  flasky:
+    build: ./flasky/
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./flasky /flasky
+    environment:
+      ENV: "UNIT"
+      SECRET_KEY: /run/secrets/flasky-secret
+      MAIL_USERNAME: /run/secrets/flasky-mail-username
+      MAIL_PASSWORD: /run/secrets/flasky-mail-password
+      FLASKY_ADMIN: /run/secrets/flasky-admin
+    secrets:
+      - flasky-secret
+      - flasky-mail-username
+      - flasky-mail-password
+      - flasky-admin
+
+secrets:
+  flasky-secret:
+    file: flasky-secret.txt
+  flasky-mail-username:
+    file: flasky-mail-username.txt
+  flasky-mail-password:
+    file: flasky-mail-password.txt
+  flasky-admin:
+    file: flasky-admin.txt
