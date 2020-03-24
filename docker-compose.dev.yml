@@ -1,15 +1,12 @@
 version: "3.1"
 
 services:
-  proxy:
-    build: ./proxy/
-    ports:
-      - "80:80"
-  
   flasky:
     build: ./flasky/
     ports:
       - "5000:5000"
+    volumes:
+      - "./flasky:/flasky"
     environment:
       ENV: "DEV"
       SECRET_KEY_FILE: /run/secrets/flasky-secret

@@ -26,8 +26,8 @@ file_env 'MAIL_PASSWORD'
 file_env 'FLASKY_ADMIN'
 
 # create database
-flask db init
-flask db migrate
+#flask db init
+#flask db migrate
 flask db upgrade
 
 # environment variables

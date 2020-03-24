@@ -5,16 +5,17 @@ from . import auth
 from .. import db
 from ..models import User
 from ..email import send_email
-from .forms import LoginForm, RegistrationForm
+from .forms import LoginForm, RegistrationForm, ChangePasswordForm
 
 
 @auth.before_app_request
 def before_request():
-    if current_user.is_authenticated \
-        and not current_user.confirmed \
-        and request.endpoint \
-        and request.blueprint != 'auth' \
-        and request.endpoint != 'static':
+    if current_user.is_authenticated and not \
+            current_user.confirmed and \
+            request.endpoint and \
+            request.blueprint != 'auth' and \
+            request.endpoint != 'static':
+
         return redirect(url_for('auth.unconfirmed'))
 
 
@@ -55,21 +56,22 @@ def register():
         flash('A confirmation email has been sent to you by email.')
         return redirect(url_for('main.index'))
 
-    return render_template('auth/register.html', form=form)    
+    return render_template('auth/register.html', form=form)
+
 
 @auth.route('/confirm/<token>')
 @login_required
 def confirm(token):
     if current_user.confirmed:
         return redirect(url_for('main.index'))
-    
+
     if current_user.confirm(token):
         db.session.commit()
         flash('You have confirmed your account. Thanks!')
-    
+
     else:
         flash('The confirmation link is invalid or has expired.')
-    
+
     return redirect(url_for('main.index'))
 
 
@@ -77,7 +79,7 @@ def confirm(token):
 @login_required
 def resend_confirmation():
     token = current_user.generate_confirmation_token()
-    send_email(current_user.email, 'Confirm Your Account', 
+    send_email(current_user.email, 'Confirm Your Account',
                'auth/email/confirm', user=current_user, token=token)
     flash('A new confirmation email has been sent to you by email.')
     return redirect(url_for('main.index'))
@@ -90,3 +92,18 @@ def logout():
     flash('You have been logged out.')
     return redirect(url_for('main.index'))
 
+
+@auth.route('/change-password', methods=['GET', 'POST'])
+@login_required
+def change_password():
+    form = ChangePasswordForm()
+    if form.validate_on_submit():
+        if current_user.verify_password(form.old_password.data):
+            current_user.password = form.password.data
+            db.session.add(current_user)
+            db.session.commit()
+            flash('Your password has been updated.')
+            return redirect(url_for('main.index'))
+        else:
+            flash('Invalid password.')
+    return render_template("auth/change_password.html", form=form)
