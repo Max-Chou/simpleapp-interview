@@ -12,19 +12,23 @@ services:
       SECRET_KEY_FILE: /run/secrets/flasky-secret
       MAIL_USERNAME_FILE: /run/secrets/flasky-mail-username
       MAIL_PASSWORD_FILE: /run/secrets/flasky-mail-password
-      FLASKY_ADMIN_FILE: /run/secrets/flasky-admin
+      ADMIN_EMAIL_FILE: /run/secrets/flasky-admin
+      ADMIN_PASSWORD_FILE: /run/secrets/flasky-admin-password
     secrets:
       - flasky-secret
       - flasky-mail-username
       - flasky-mail-password
       - flasky-admin
+      - flasky-admin-password
 
 secrets:
   flasky-secret:
-    file: flasky-secret.txt
+    file: credentials/flasky-secret.txt
   flasky-mail-username:
-    file: flasky-mail-username.txt
+    file: credentials/flasky-mail-username.txt
   flasky-mail-password:
-    file: flasky-mail-password.txt
+    file: credentials/flasky-mail-password.txt
   flasky-admin:
-    file: flasky-admin.txt
+    file: credentials/flasky-admin.txt
+  flasky-admin-password:
+    file: credentials/flasky-admin-password.txt

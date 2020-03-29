@@ -10,10 +10,10 @@ services:
     image: afai97202013/flasky:1.0
     environment:
       ENV: "PROD"
-      SECRET_KEY: /run/secrets/flasky-secret
-      MAIL_USERNAME: /run/secrets/flasky-mail-username
-      MAIL_PASSWORD: /run/secrets/flasky-mail-password
-      FLASKY_ADMIN: /run/secrets/flasky-admin
+      SECRET_KEY_FILE: /run/secrets/flasky-secret
+      MAIL_USERNAME_FILE: /run/secrets/flasky-mail-username
+      MAIL_PASSWORD_FILE: /run/secrets/flasky-mail-password
+      ADMIN_EMAIL_FILE: /run/secrets/flasky-admin
     secrets:
       - flasky-secret
       - flasky-mail-username

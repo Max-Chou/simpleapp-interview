@@ -17,7 +17,7 @@ services:
       SECRET_KEY: /run/secrets/flasky-secret
       MAIL_USERNAME: /run/secrets/flasky-mail-username
       MAIL_PASSWORD: /run/secrets/flasky-mail-password
-      FLASKY_ADMIN: /run/secrets/flasky-admin
+      ADMIN_EMAIL: /run/secrets/flasky-admin
     secrets:
       - flasky-secret
       - flasky-mail-username

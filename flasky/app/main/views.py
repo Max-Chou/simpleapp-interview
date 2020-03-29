@@ -1,9 +1,11 @@
 from flask import render_template, session, redirect, url_for, current_app
+from flask_login import login_required
 from .. import db
-from ..models import User
+from ..models import User, Role, Permission
 from ..email import send_email
 from . import main
 from .forms import NameForm
+from ..decorators import admin_required, permission_required
 
 
 @main.route('/', methods=['GET', 'POST'])
@@ -16,8 +18,8 @@ def index():
             db.session.add(user)
             db.session.commit()
             session['known'] = False
-            if current_app.config['FLASKY_ADMIN']:
-                send_email(current_app.config['FLASKY_ADMIN'], 'New User',
+            if current_app.config['ADMIN_EMAIL']:
+                send_email(current_app.config['ADMIN_EMAIL'], 'New User',
                            'mail/new_user', user=user)
         else:
             session['known'] = True
@@ -27,3 +29,17 @@ def index():
     return render_template('index.html',
                            form=form, name=session.get('name'),
                            known=session.get('known', False))
+
+
+@main.route('/admin')
+@login_required
+@admin_required
+def for_admins_only():
+    return "For administrators!"
+
+
+@main.route('/moderate')
+@login_required
+@permission_required(Permission.MODERATE)
+def for_moderators_only():
+    return "For comment moderators!"

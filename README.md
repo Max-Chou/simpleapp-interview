@@ -1,72 +1,100 @@
 # simpleapp-interview
 The simple project for the job interview. (junior Backend, junior DevOps)
 
-* Python Flask framework
-* SQLAlchemy ORM
-* Registration System
-* Email Confirmation
-
-## System Requirements
-* Linux Operating System
-* Python 3.6
-* Web-Server (Nginx or Apache)
-* Docker Swarm Supported
-
 ## Features
-* Basic Database (SQLalchemy ORM).
-* Basic Authentication methods (Registration and confirmation by email).
-* Bootstrap 3
-* Use Flask extensions
+* Flask framework and extensions
+* User Registration
+* Email Confirmation
 
 ## Usage
 I highly recommand to build and run tests on containers. But I will write optional solution to deploy on metals and virtual machines.
 
-### Docker Development and Deployment 
+### Local
 Requirements:
-* Docker CE
-* Docker Compose
-* Docker Swarm
+* Linux Systems
+* Python 3.6
 
-First, create initial image from Dockerfile in flasky.
+#### Development
+Create the virtual environment.
 
-`docker build -t <name_image> flasky/`
+`python3 -m venv venv`
 
-Then run the container with following commands.
+Activate the virtual environment.
 
-`docker container run --name <name_container> -e ENV=DEV <name_image>`
+`source venv/bin/activate`
 
-Open the browser and visit on `localhost:5000`.
+Install flask and extensions.
 
-In development, we can make the changes of the applicaton by bind mounting.
+`pip install -r requirements.txt`
 
-`docker container run --name <name_container> -e ENV=DEV -v ./flasky:/flasky <name_image>`
+Set environment variables.
 
-In unit tests, we simply run the command in the container you created before.
+```
+export FLASK_APP=flasky.py
+export FLASK_DEBUG=1
+export SECRET='secret'
+export MAIL_USERNAME='username'
+export MAIL_PASSWORD='password'
+export ADMIN_EMAIL='admin@example.com'
+export ADMIN_PASSWORD='admin'
+```
 
-`docker container exec -it <name_container> flask test`
+You can register a email server from other providers(mailtrap) or use your own.
 
-Or create and run a new container.
+Run the following commands
 
-`docker container run --name <name_container> -e ENV=UNIT <name_image>`
+```
+flask db upgrade
+flask init
+flask run
+```
 
-Next, we run the integration tests with multiple containers.
+These commands will create initial database, create an initial admin user and roles.
 
-`docker-compose -f docker-compose.unittest.yml up --no-cache`
+Open your browser and visit `http://localhost:5000`
 
-If we passes all the tests, the application is ready to deploy.
-**The whole procedure can be automated by Jenkins.**
+Perform unit tests.
 
-Before we deploy our application, we have to create a image and tag a versions.
+`flask test`
 
-`docker tag <name_image> <repository>/<name_image>:<version>`
+#### Deployment
 
-Distribute the image on Docker Hub.
+To deploy the application, you have to install wsgi server and web server.
 
-`docker push <repository>/<name_image>:<version>`
-**You can use automated builds from Docker Hub.**
 
-Finally, it's time to deploy.
+### Container
 
-`docker stack deploy -c docker-compose.prod.yml <name_stack>`
+Running this application in containers is easier than in metals.
 
-Docker Swarm is really simple container ochestration. For this simple application, Kubernetes is not necessary.
+#### Development
+
+Run the application in development environment.
+
+```
+docker-compose -f docker-compose.dev.yml build
+docker-compose -f docker-compose.dev.yml up -d
+```
+
+Run the test.
+
+`docker container exec <container's name> flask test`
+
+Stop and remove the container.
+
+`docker-compose -f docker-compose.dev.yml down`
+
+Before you deploy the application, you have to create image and distribute it on Docker Hub or other registry providers.
+
+#### Deployment
+
+In this example, I'll deploy the application by docker swarm.
+
+Set the environment variables with docker secret.
+
+`echo 'secret' | docker secret create flasky-secret`
+
+Deploy the application by docker swarm.
+
+`docker stack deploy -c docker-compose.prod.yml flasky`
+
+The docker will create a proxy server and an application server. I've created the image on Docker Hub.

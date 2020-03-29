@@ -23,12 +23,16 @@ file_env() {
 file_env 'SECRET_KEY'
 file_env 'MAIL_USERNAME'
 file_env 'MAIL_PASSWORD'
-file_env 'FLASKY_ADMIN'
+file_env 'ADMIN_EMAIL'
+file_env 'ADMIN_PASSWORD'
 
 # create database
 #flask db init
-#flask db migrate
+flask db migrate
 flask db upgrade
+
+# create roles and admin user
+flask init
 
 # environment variables
 if [ "$ENV" = 'DEV' ]; then
