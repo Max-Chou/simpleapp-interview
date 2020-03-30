@@ -29,15 +29,7 @@ def test(test_names):
 def init():
     """Create initial roles and admin user"""
     Role.insert_roles()
-    if User.query.filter_by(email=app.config['ADMIN_EMAIL']) is None:
-        admin_role = Role.query.filter_by(name="Administrator").first()
-        admin_user = User(email=app.config['ADMIN_EMAIL'], 
-                          password=app.config['ADMIN_PASSWORD'], 
-                          username="admin",
-                          confirmed=True)
-        admin_user.role = admin_role
-        db.session.add(admin_user)
-        db.session.commit()
+    User.insert_admin()
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
