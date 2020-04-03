@@ -28,13 +28,14 @@ file_env 'ADMIN_PASSWORD'
 
 # create database
 flask db upgrade
+flask db migrate
+flask db upgrade
 
 # create roles and admin user
 flask init
 
 # environment variables
 if [ "$ENV" = 'DEV' ]; then
-  flask db migrate
   echo "Running Development Server"
   flask run --host=0.0.0.0
 elif [ "$ENV" = 'UNIT' ]; then

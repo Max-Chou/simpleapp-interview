@@ -25,11 +25,13 @@ def test(test_names):
         tests = unittest.TestLoader().discover('tests')
     unittest.TextTestRunner(verbosity=2).run(tests)
 
+
 @app.cli.command()
 def init():
     """Create initial roles and admin user"""
     Role.insert_roles()
     User.insert_admin()
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
