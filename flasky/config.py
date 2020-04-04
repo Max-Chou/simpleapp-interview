@@ -15,6 +15,7 @@ class Config:
     ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL')
     ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    FLASKY_POSTS_PER_PAGE = 20
 
     @staticmethod
     def init_app(app):
