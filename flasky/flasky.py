@@ -3,7 +3,7 @@ import os
 import click
 from app import create_app, db
 from app.models import User, Role, Permission, Post, Follow, Comment
-from flask_migrate import Migrate
+from flask_migrate import Migrate, upgrade
 
 COV = None
 if os.environ.get('FLASK_COVERAGE'):
@@ -55,10 +55,12 @@ def test(coverage, test_names):
 
 
 @app.cli.command()
-def init():
+def deploy():
     """Create initial roles and admin user"""
+    upgrade()
     Role.insert_roles()
     User.insert_admin()
+    User.add_self_follows()
 
 
 if __name__ == '__main__':

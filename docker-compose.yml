@@ -1,8 +1,47 @@
 version: "3.1"
 
 services:
-  proxy:
-    image: flasky-proxy:latest
-  
   flasky:
-    image: flasky:latest
+    build: ./flasky/
+    ports:
+      - "9090:9090"
+    volumes:
+      - "./flasky:/flasky"
+    environment:
+      ENV: "PROD"
+      FLASK_CONFIG: "production"
+      SECRET_KEY_FILE: /run/secrets/flasky-secret
+      MAIL_USERNAME_FILE: /run/secrets/flasky-mail-username
+      MAIL_PASSWORD_FILE: /run/secrets/flasky-mail-password
+      ADMIN_EMAIL_FILE: /run/secrets/flasky-admin
+      ADMIN_PASSWORD_FILE: /run/secrets/flasky-admin-password
+      DATABASE_URL: "postgresql+psycopg2://flasky:flasky@db:5432/flasky"
+    secrets:
+      - flasky-secret
+      - flasky-mail-username
+      - flasky-mail-password
+      - flasky-admin
+      - flasky-admin-password
+  db:
+    image: postgres:12
+    volumes:
+      - "flasky-data:/var/lib/postgresql/data"
+    environment:
+      POSTGRES_DB: "flasky"
+      POSTGRES_USER: "flasky"
+      POSTGRES_PASSWORD: "flasky"
+
+secrets:
+  flasky-secret:
+    file: credentials/flasky-secret.txt
+  flasky-mail-username:
+    file: credentials/flasky-mail-username.txt
+  flasky-mail-password:
+    file: credentials/flasky-mail-password.txt
+  flasky-admin:
+    file: credentials/flasky-admin.txt
+  flasky-admin-password:
+    file: credentials/flasky-admin-password.txt
+
+volumes:
+  flasky-data:

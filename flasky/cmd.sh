@@ -26,13 +26,8 @@ file_env 'MAIL_PASSWORD'
 file_env 'ADMIN_EMAIL'
 file_env 'ADMIN_PASSWORD'
 
-# create database
-flask db upgrade
-flask db migrate
-flask db upgrade
-
 # create roles and admin user
-flask init
+flask deploy
 
 # environment variables
 if [ "$ENV" = 'DEV' ]; then
