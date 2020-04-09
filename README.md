@@ -1,100 +1,88 @@
 # simpleapp-interview
-The simple project for the job interview. (junior Backend, junior DevOps)
+The simple blog app with Flask framework and SQL Database.
 
 ## Features
-* Flask framework and extensions
-* User Registration
-* Email Confirmation
+* Blog
+* User Registration and Authentication
+* Post an article and comment
+* Moderate comments
+
+### To Do:
+* Authentication from Google, Twitter or other platforms
+* Upload files
+* Deployment
+
+## Requirements
+
+* Linux Systems, Ubuntu 18.04 or CentOS 7
+* Python 3.6
+* Docker Engine (Optional)
+* Docker Compose
 
 ## Usage
-I highly recommand to build and run tests on containers. But I will write optional solution to deploy on metals and virtual machines.
 
-### Local
-Requirements:
-* Linux Systems
-* Python 3.6
+### Docker
 
-#### Development
-Create the virtual environment.
+The simple way to try the app is using Docker.
+
+First, build the image from Dockerfile.
+
+`docker-compose build`
+
+Second, build the whole application, including Nginx and postgreSQL.
+
+`docker-compose up -d`
+
+### Development on your machine
+**Extensions**
+* flask-bootstrap(Bootstrap 3)
+* flask-moment
+* flask-login
+* flask-mail
+* flask-sqlalchemy
+* flask-migrate
+* flask-wtf
+* flask-pagedown
+* markdown
+* bleach
+* uwsgi or gunicorn
+* flask-httpauth
+* psycopg2-binary
+* coverage (Optional, test only)
+* selenium (Optional, test only)
+
+Suppose that you're familiar with the virtual environment in python or install the anaconda.
 
 `python3 -m venv venv`
+`conda create --name flask python=3.6`
 
-Activate the virtual environment.
-
-`source venv/bin/activate`
-
-Install flask and extensions.
+Install the extensions and other libraries
 
 `pip install -r requirements.txt`
 
-Set environment variables.
+**Environment Variables**
 
-```
-export FLASK_APP=flasky.py
-export FLASK_DEBUG=1
-export SECRET='secret'
-export MAIL_USERNAME='username'
-export MAIL_PASSWORD='password'
-export ADMIN_EMAIL='admin@example.com'
-export ADMIN_PASSWORD='admin'
-```
+* SECRET_KEY
 
-You can register a email server from other providers(mailtrap) or use your own.
+Used for encryption.
 
-Run the following commands
+* MAIL_USERNAME
+* MAIL_PASSWORD
 
-```
-flask db upgrade
-flask init
-flask run
-```
+Used for Mail Service.
 
-These commands will create initial database, create an initial admin user and roles.
+* ADMIN_EMAIL
+* ADMIN_PASSWORD
 
-Open your browser and visit `http://localhost:5000`
+Used to create admin account.
 
-Perform unit tests.
+* DEV\_DATABASE\_URL (optional)
 
-`flask test`
+Choose database engine. The default is SQLite.
 
-#### Deployment
+* FLASKY_CONFIG (optional)
 
-To deploy the application, you have to install wsgi server and web server.
+Choose configuration. The default is development.
 
-
-### Container
-
-Running this application in containers is easier than in metals.
-
-#### Development
-
-Run the application in development environment.
-
-```
-docker-compose -f docker-compose.dev.yml build
-docker-compose -f docker-compose.dev.yml up -d
-```
-
-Run the test.
-
-`docker container exec <container's name> flask test`
-
-Stop and remove the container.
-
-`docker-compose -f docker-compose.dev.yml down`
-
-Before you deploy the application, you have to create image and distribute it on Docker Hub or other registry providers.
-
-#### Deployment
-
-In this example, I'll deploy the application by docker swarm.
-
-Set the environment variables with docker secret.
-
-`echo 'secret' | docker secret create flasky-secret`
-
-Deploy the application by docker swarm.
-
-`docker stack deploy -c docker-compose.prod.yml flasky`
-
-The docker will create a proxy server and an application server. I've created the image on Docker Hub.
+### Deployment
+Simple way to deploy is using PaaS service like Heroku. 

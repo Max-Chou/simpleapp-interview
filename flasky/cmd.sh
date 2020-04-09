@@ -29,6 +29,8 @@ file_env 'ADMIN_PASSWORD'
 # create roles and admin user
 flask deploy
 
+sleep 20
+
 # environment variables
 if [ "$ENV" = 'DEV' ]; then
   echo "Running Development Server"

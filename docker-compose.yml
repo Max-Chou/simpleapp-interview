@@ -1,12 +1,15 @@
 version: "3.1"
 
 services:
+  proxy:
+    build: ./proxy/
+    ports:
+      - "80:80"
+
   flasky:
     build: ./flasky/
     ports:
       - "9090:9090"
-    volumes:
-      - "./flasky:/flasky"
     environment:
       ENV: "PROD"
       FLASK_CONFIG: "production"
@@ -22,6 +25,9 @@ services:
       - flasky-mail-password
       - flasky-admin
       - flasky-admin-password
+    depends_on:
+      - db
+
   db:
     image: postgres:12
     volumes:
